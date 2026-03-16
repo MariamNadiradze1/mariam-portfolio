@@ -7,13 +7,10 @@
   <style>
     :root {
       --bg: #020617;
-      --panel: rgba(15, 23, 42, 0.82);
-      --panel-2: rgba(15, 23, 42, 0.62);
       --border: rgba(255, 255, 255, 0.1);
       --text: #e2e8f0;
       --muted: #94a3b8;
       --accent: #67e8f9;
-      --accent-dark: #22d3ee;
       --white: #ffffff;
       --shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
       --radius: 28px;
@@ -65,12 +62,29 @@
 
     .nav-links {
       display: flex;
-      gap: 24px;
+      gap: 10px;
       color: var(--muted);
       font-size: 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 999px;
+      padding: 8px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
 
-    .nav-links a:hover { color: var(--accent); }
+    .nav-links a {
+      padding: 10px 14px;
+      border-radius: 999px;
+      transition: 0.25s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--white);
+      background: rgba(103, 232, 249, 0.12);
+      box-shadow: inset 0 0 0 1px rgba(103, 232, 249, 0.22);
+    }
 
     .btn {
       display: inline-flex;
@@ -119,10 +133,11 @@
     }
 
     h1 {
-      font-size: clamp(30px, 4vw, 48px);
-      line-height: 1.1;
+      font-size: clamp(28px, 3.5vw, 46px);
+      line-height: 1.12;
       margin: 18px 0 18px;
       color: var(--white);
+      max-width: 620px;
     }
 
     .hero p {
@@ -176,10 +191,23 @@
       pointer-events: none;
     }
 
-    .hero-card img {
-      border-radius: 24px;
-      min-height: 320px;
-      object-fit: cover;
+    .hero-logo {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:320px;
+      border-radius:24px;
+      background:linear-gradient(135deg, rgba(8,47,73,0.72), rgba(15,23,42,0.22));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-logo img {
+      width: 280px;
+      max-width: 80%;
+      height: auto;
+      margin: 0 auto 18px;
+      object-fit: contain;
     }
 
     .stats {
@@ -188,7 +216,7 @@
 
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 18px;
     }
 
@@ -251,12 +279,26 @@
       box-shadow: var(--shadow);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
+      transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 26px 54px rgba(0, 0, 0, 0.42);
+      border-color: rgba(103, 232, 249, 0.2);
     }
 
     .project-card img {
       height: 220px;
       object-fit: contain;
+      object-position: center;
       background:#020617;
+      transition: transform 0.45s ease;
+      padding: 10px;
+    }
+
+    .project-card:hover img {
+      transform: scale(1.04);
     }
 
     .project-body { padding: 22px; }
@@ -302,13 +344,26 @@
       grid-template-columns: 1.05fr 0.95fr;
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
+      transition: transform 0.28s ease, box-shadow 0.28s ease;
+    }
+
+    .detail-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 26px 54px rgba(0, 0, 0, 0.42);
     }
 
     .detail-card img {
       height: 100%;
       min-height: 360px;
       object-fit: contain;
+      object-position: center;
       background:#020617;
+      transition: transform 0.45s ease;
+      padding: 12px;
+    }
+
+    .detail-card:hover img {
+      transform: scale(1.02);
     }
 
     .detail-text {
@@ -505,9 +560,9 @@
         </div>
       </div>
       <div class="hero-card">
-        <div style="display:flex; align-items:center; justify-content:center; min-height:320px; border-radius:24px; background:linear-gradient(135deg, rgba(8,47,73,0.72), rgba(15,23,42,0.22));">
-          <div style="text-align:center; padding:28px;">
-            <img src="https://seeklogo.com/images/P/power-bi-logo-EDB2A1F1C2-seeklogo.com.png" alt="Power BI logo" style="width:140px; height:auto; margin:0 auto 18px;" />
+        <div class="hero-logo">
+          <div style="text-align:center; padding:28px; position:relative; z-index:1;">
+            <img src="power-bi-seeklogo.png" alt="Power BI logo" />
             <div style="font-size:34px; font-weight:700; color:#fff;">Power BI Portfolio</div>
             <div style="margin-top:10px; color:#cbd5e1;">Business Intelligence • Data Analytics • Dashboard Design</div>
           </div>
@@ -518,10 +573,10 @@
 
   <section class="stats">
     <div class="container stats-grid">
-      <div class="card"><div class="stat-number">5</div><div class="stat-label">Featured Projects</div></div>
-      <div class="card"><div class="stat-number">3+<\/div><div class="stat-label">Experience Years<\/div><\/div>
-      <div class="card"><div class="stat-number">2</div><div class="stat-label">Microsoft Certifications</div></div>
-      <div class="card"><div class="stat-number">10+</div><div class="stat-label">Core BI Skills</div></div>
+      <div class="card"><div class="stat-number" data-target="5" data-suffix="">0</div><div class="stat-label">Featured Projects</div></div>
+      <div class="card"><div class="stat-number" data-target="3" data-suffix="+">0</div><div class="stat-label">Experience Years</div></div>
+      <div class="card"><div class="stat-number" data-target="2" data-suffix="">0</div><div class="stat-label">Microsoft Certifications</div></div>
+      <div class="card"><div class="stat-number" data-target="10" data-suffix="+">0</div><div class="stat-label">Core BI Skills</div></div>
     </div>
   </section>
 
@@ -825,7 +880,7 @@
         <div style="margin-top:20px; color:var(--text);">
           <div><strong>Email:</strong> mariamnadiradze1234@gmail.com</div>
           <div style="margin-top:8px;"><strong>Phone:</strong> +995 579 181956</div>
-          
+          <div style="margin-top:8px;"><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/mariam-nadiradze-539027237/" target="_blank" rel="noreferrer" style="color:var(--accent);">linkedin.com/in/mariam-nadiradze-539027237</a></div>
         </div>
       </div>
       <div class="hero-actions">
@@ -838,5 +893,54 @@
   <footer>
     <div class="container">© Mariam Nadiradze • Power BI Portfolio</div>
   </footer>
+
+  <script>
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const sections = Array.from(document.querySelectorAll('section[id]'));
+
+    function setActiveNav() {
+      let current = 'home';
+      const scrollY = window.scrollY + 140;
+      sections.forEach(section => {
+        if (scrollY >= section.offsetTop) current = section.id;
+      });
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+      });
+    }
+
+    window.addEventListener('scroll', setActiveNav);
+    setActiveNav();
+
+    const counters = document.querySelectorAll('.stat-number[data-target]');
+
+    function animateCounter(el) {
+      const target = Number(el.dataset.target || 0);
+      const suffix = el.dataset.suffix || '';
+      const duration = 1200;
+      const start = performance.now();
+
+      function tick(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const value = Math.round(target * eased);
+        el.textContent = value + suffix;
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    const counterObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.6 });
+
+    counters.forEach(counter => counterObserver.observe(counter));
+  </script>
 </body>
 </html>
